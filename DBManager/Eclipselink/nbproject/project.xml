@@ -179,6 +179,7 @@
                 <package>org.eclipse.persistence.internal.weaving</package>
                 <package>org.eclipse.persistence.internal.xr</package>
                 <package>org.eclipse.persistence.internal.xr.sxf</package>
+                <package>org.eclipse.persistence.javax.persistence.osgi</package>
                 <package>org.eclipse.persistence.jaxb</package>
                 <package>org.eclipse.persistence.jaxb.attachment</package>
                 <package>org.eclipse.persistence.jaxb.compiler</package>
@@ -198,6 +199,15 @@
                 <package>org.eclipse.persistence.jpa.dynamic</package>
                 <package>org.eclipse.persistence.jpa.jpql</package>
                 <package>org.eclipse.persistence.jpa.jpql.parser</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.model</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.model.query</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.resolver</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.spi</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility.filter</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility.iterable</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility.iterator</package>
                 <package>org.eclipse.persistence.jpa.jpql.utility</package>
                 <package>org.eclipse.persistence.jpa.jpql.utility.filter</package>
                 <package>org.eclipse.persistence.jpa.jpql.utility.iterable</package>
@@ -309,6 +319,7 @@
                 <package>org.eclipse.persistence.transaction.sunas</package>
                 <package>org.eclipse.persistence.transaction.was</package>
                 <package>org.eclipse.persistence.transaction.wls</package>
+                <package>org.osgi.service.jpa</package>
             </public-packages>
             <class-path-extension>
                 <runtime-relative-path>ext/javax.persistence_2.1.0.v201304241213.jar</runtime-relative-path>
