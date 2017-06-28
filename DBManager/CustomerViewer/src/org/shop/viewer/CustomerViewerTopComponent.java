@@ -5,6 +5,8 @@
  */
 package org.shop.viewer;
 
+import demo.Customer;
+import java.util.List;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -43,10 +45,10 @@ public final class CustomerViewerTopComponent extends TopComponent {
         setToolTipText(Bundle.HINT_CustomerViewerTopComponent());
         
         EntityManager entityManager = Persistence.createEntityManagerFactory("CustomerLibraryPU").createEntityManager();
-Query query = entityManager.createNamedQuery("Customer.findAll");
-List<Customer> resultList = query.getResultList();
-for (Customer c : resultList) {
-  jTextArea1.append(c.getName() + " (" + c.getCity() + ")" + "\n");
+        Query query = entityManager.createNamedQuery("Customer.findAll");
+        List<Customer> resultList = query.getResultList();
+            for (Customer c : resultList) {
+                jTextArea1.append(c.getName() + " (" + c.getCity() + ")" + "\n");
 }
 
     }
