@@ -48,15 +48,15 @@ public final class CustomerViewerTopComponent extends TopComponent {
         setName(Bundle.CTL_CustomerViewerTopComponent());
         setToolTipText(Bundle.HINT_CustomerViewerTopComponent());
 
-    }
-    
-    
-        EntityManager entityManager = Persistence.createEntityManagerFactory("CustomerLibraryPU").createEntityManager();
+        
+                EntityManager entityManager = Persistence.createEntityManagerFactory("CustomerLibraryPU").createEntityManager();
         Query query = entityManager.createNamedQuery("Customer.findAll");
         List<Customer> resultList = query.getResultList();
         for (Customer c : resultList) {
           jTextArea1.append(c.getName() + " (" + c.getCity() + ")" + "\n");
         }
+    }
+    
     
 
     /**
