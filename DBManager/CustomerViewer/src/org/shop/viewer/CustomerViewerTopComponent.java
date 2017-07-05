@@ -13,6 +13,9 @@ import javax.persistence.Query;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.explorer.ExplorerManager;
+import org.openide.nodes.AbstractNode;
+import org.openide.nodes.Children;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
 
@@ -41,23 +44,28 @@ import org.openide.windows.TopComponent;
     "CTL_CustomerViewerTopComponent=CustomerViewer Window",
     "HINT_CustomerViewerTopComponent=This is a CustomerViewer window"
 })
-public final class CustomerViewerTopComponent extends TopComponent {
 
+public final class CustomerViewerTopComponent extends TopComponent implements ExplorerManager.Provider {
+
+    private static ExplorerManager em = new ExplorerManager();
+
+    
     public CustomerViewerTopComponent() {
         initComponents();
         setName(Bundle.CTL_CustomerViewerTopComponent());
         setToolTipText(Bundle.HINT_CustomerViewerTopComponent());
 
         
-                EntityManager entityManager = Persistence.createEntityManagerFactory("CustomerLibraryPU").createEntityManager();
+        EntityManager entityManager =  Persistence.createEntityManagerFactory("CustomerLibraryPU").createEntityManager();
         Query query = entityManager.createNamedQuery("Customer.findAll");
         List<Customer> resultList = query.getResultList();
-        for (Customer c : resultList) {
-          jTextArea1.append(c.getName() + " (" + c.getCity() + ")" + "\n");
-        }
+        em.setRootContext(new AbstractNode(Children.create(new CustomerChildFactory(resultList), true)));
+        //for (Customer c : resultList) {
+        //    jTextArea1.append(c.getName() + " (" + c.getCity() + ")" + "\n");
+        //}
+        
+
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,6 +77,7 @@ public final class CustomerViewerTopComponent extends TopComponent {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        beanTreeView1 = new org.openide.explorer.view.BeanTreeView();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -79,20 +88,25 @@ public final class CustomerViewerTopComponent extends TopComponent {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                    .addComponent(beanTreeView1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(931, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(111, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(beanTreeView1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(56, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.openide.explorer.view.BeanTreeView beanTreeView1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
@@ -105,6 +119,11 @@ public final class CustomerViewerTopComponent extends TopComponent {
     public void componentClosed() {
         // TODO add custom code on component closing
     }
+    @Override
+    public ExplorerManager getExplorerManager() {
+    return em;
+    }
+    
 
     void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
