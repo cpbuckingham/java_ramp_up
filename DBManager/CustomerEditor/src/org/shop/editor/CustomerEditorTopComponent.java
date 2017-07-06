@@ -5,9 +5,14 @@
  */
 package org.shop.editor;
 
+import demo.Customer;
+import java.util.Collection;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Lookup;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
@@ -35,7 +40,7 @@ import org.openide.util.NbBundle.Messages;
     "CTL_CustomerEditorTopComponent=CustomerEditor Window",
     "HINT_CustomerEditorTopComponent=This is a CustomerEditor window"
 })
-public final class CustomerEditorTopComponent extends TopComponent {
+public final class CustomerEditorTopComponent extends TopComponent implements LookupListener{
 
     public CustomerEditorTopComponent() {
         initComponents();
@@ -135,4 +140,21 @@ public final class CustomerEditorTopComponent extends TopComponent {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
+
+    
+    @Override
+    public void resultChanged(LookupEvent lookupEvent) {
+    Lookup.Result r = (Lookup.Result) lookupEvent.getSource();
+    Collection<Customer> coll = r.allInstances();
+    if (!coll.isEmpty()) {
+        for (Customer cust : coll) {
+            nameField.setText(cust.getName());
+            cityField.setText(cust.getCity());
+        }
+    } else {
+        nameField.setText("[no name]");
+        cityField.setText("[no city]");
+    }
+}
+
 }

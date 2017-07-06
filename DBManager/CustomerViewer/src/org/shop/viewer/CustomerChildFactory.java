@@ -10,8 +10,10 @@ import java.beans.IntrospectionException;
 import java.util.List;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.ChildFactory;
+import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
+import org.openide.util.lookup.Lookups;
 
 /**
  *
@@ -40,6 +42,13 @@ public class CustomerChildFactory extends ChildFactory<Customer> {
         } catch (IntrospectionException ex) {
             Exceptions.printStackTrace(ex);
             return null;
+        }
+    }
+    
+    private class CustomerBeanNode extends BeanNode{
+        public CustomerBeanNode(Customer bean) throws IntrospectionException{
+            super(bean, Children.LEAF, Lookups.singleton(bean));
+            
         }
     }
 
