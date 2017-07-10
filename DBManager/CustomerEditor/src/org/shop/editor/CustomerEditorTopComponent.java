@@ -15,6 +15,8 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import org.openide.util.Utilities;
+import org.openide.windows.WindowManager;
 
 /**
  * Top component which displays something.
@@ -41,6 +43,8 @@ import org.openide.util.NbBundle.Messages;
     "HINT_CustomerEditorTopComponent=This is a CustomerEditor window"
 })
 public final class CustomerEditorTopComponent extends TopComponent implements LookupListener{
+    
+    private Lookup.Result result = null;
 
     public CustomerEditorTopComponent() {
         initComponents();
@@ -60,8 +64,8 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        nameField = new javax.swing.JTextField();
+        cityField = new javax.swing.JTextField();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -69,12 +73,12 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.jLabel2.text")); // NOI18N
 
-        jTextField1.setText(org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.jTextField1.text")); // NOI18N
+        nameField.setText(org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.nameField.text")); // NOI18N
 
-        jTextField2.setText(org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.jTextField2.text")); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        cityField.setText(org.openide.util.NbBundle.getMessage(CustomerEditorTopComponent.class, "CustomerEditorTopComponent.cityField.text")); // NOI18N
+        cityField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                cityFieldActionPerformed(evt);
             }
         });
 
@@ -89,8 +93,8 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cityField, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(89, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -99,34 +103,37 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
                 .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(89, 89, 89)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cityField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(97, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void cityFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_cityFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField cityField;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField nameField;
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+    result = WindowManager.getDefault().findTopComponent("CustomerViewerTopComponent").getLookup().lookupResult(Customer.class);
+    result.addLookupListener(this);
+    resultChanged(new LookupEvent(result));
     }
 
     @Override
     public void componentClosed() {
-        // TODO add custom code on component closing
+    result.removeLookupListener(this);
+    result = null;
     }
 
     void writeProperties(java.util.Properties p) {
@@ -154,7 +161,7 @@ public final class CustomerEditorTopComponent extends TopComponent implements Lo
     } else {
         nameField.setText("[no name]");
         cityField.setText("[no city]");
+        }
     }
-}
 
 }
